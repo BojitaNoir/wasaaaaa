@@ -44,8 +44,8 @@
     </div>
   </div>
   <div class="mb-3">
-    <label for="contraseña" class="form-label">Contraseña</label>
-    <input type="password" class="form-control" id="contraseña" name="contraseña" required>
+    <label for="password" class="form-label">Contraseña</label>
+    <input type="password" class="form-control" id="password" name="password" required>
     <div class="invalid-feedback">
       Por favor ingresa una contraseña válida.
     </div>
@@ -56,8 +56,6 @@
     </button>
   </div>
 </form>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 </body>
 </html>

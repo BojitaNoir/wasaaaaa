@@ -117,7 +117,7 @@ public class DaoUser {
         return users;
     }
 
-    public boolean saveI(User user) {
+    public boolean saveUser(User user) {
         try {
             conn = new MySQLConnection().connect();
             String query = "INSERT INTO persons (first_name, last_name, curp, birthdate) VALUES (?, ?, ?, ?)";

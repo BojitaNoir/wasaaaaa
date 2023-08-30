@@ -55,6 +55,8 @@ public class ServletUser extends HttpServlet {
                 redirect = "/views/admin.jsp";
                 break;
             case "/user/user":
+                List<Class> clases4 = new DaoUser().findAllClasses();
+                req.setAttribute("classes", clases4);
                 redirect = "/views/user.jsp";
                 break;
             case "/user/logut":
@@ -136,7 +138,7 @@ public class ServletUser extends HttpServlet {
                 email = req.getParameter("email");
                 password = req.getParameter("password");
                 user = new User(null,null,firstName,lastName,curp,birthdate,email,password,"Activo",2L);
-                boolean result = new DaoUser().saveI(user);
+                boolean result = new DaoUser().saveUser(user);
                 if (result) {
                     redirect = "/user/admin?result=" + result + "&message=" + URLEncoder.encode("Guardado", StandardCharsets.UTF_8);
                 } else {
@@ -160,8 +162,14 @@ public class ServletUser extends HttpServlet {
                 curp = req.getParameter("curp");
                 birthdate = req.getParameter("fecha");
                 email = req.getParameter("correo");
-                password = req.getParameter("contraseña");
-                User newUser = new User();
+                password = req.getParameter("password");
+                User user3 = new User(null,null,firstName,lastName,curp,birthdate,email,password,"Activo",3L);
+                boolean result3 = new DaoUser().saveUser(user3);
+                if (result3) {
+                    redirect = "/user/start?result=" + result3 + "&message=" + URLEncoder.encode("Guardado", StandardCharsets.UTF_8);
+                } else {
+                    redirect = "/user/start?result=" + result3 + "&message=" + URLEncoder.encode("No se guardo", StandardCharsets.UTF_8);
+                }
                 break;
         }
         resp.sendRedirect(req.getContextPath() + redirect);
