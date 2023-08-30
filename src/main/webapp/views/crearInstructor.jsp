@@ -1,0 +1,44 @@
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<html>
+<head>
+    <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+<body>
+
+<form class="needs-validation" action="/user/save-I" novalidate method="post">
+  <div class="mb-3">
+    <label for="nombres" class="form-label">Nombre</label>
+    <input type="text" class="form-control" id="nombres" name="firstName" required>
+  </div>
+  <div class="mb-3">
+    <label for="apellidos" class="form-label">Apellidos</label>
+    <input type="text" class="form-control" id="apellidos" name="lastName" required>
+  </div>
+  <div class="mb-3">
+    <label for="curp" class="form-label">Curp</label>
+    <input type="text" class="form-control" id="curp" name="curp" required>
+  </div>
+  <div class="mb-3">
+    <label for="fecha" class="form-label">Fecha Nacimiento</label>
+    <input type="date" class="form-control" id="fecha" name="birthdate" required>
+  </div>
+  <div class="mb-3">
+    <label for="correo" class="form-label">Correo</label>
+    <input type="email" class="form-control" id="correo" name="email" required>
+  </div>
+  <div class="mb-3">
+    <label for="contraseña" class="form-label">Contraseña</label>
+    <input type="password" class="form-control" id="contraseña" name="password" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Crear Instructor</button>
+</form>
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</body>
+</html>

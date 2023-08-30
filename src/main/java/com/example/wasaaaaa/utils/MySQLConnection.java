@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnection {
-    final String DBNAME = "emi",
+    final String DBNAME = "isai",
             USER = "root",
             PASSWORD = "root",
             TIMEZONE = "America/Mexico_City",

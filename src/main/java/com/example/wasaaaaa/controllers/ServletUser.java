@@ -2,6 +2,7 @@ package com.example.wasaaaaa.controllers;
 
 import com.example.wasaaaaa.models.DaoUser;
 import com.example.wasaaaaa.models.User;
+import com.example.wasaaaaa.models.Class;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,13 +13,19 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @WebServlet(name = "users", urlPatterns = {
         "/user/start",
         "/user/admin",
         "/user/login",
         "/user/instructor",
-        "/user/user"
+        "/user/user",
+        "/user/logut",
+        "/user/save-I",
+        "/user/view-createI",
+        "/user/view-createC",
+        "/user/save-C"
 })
 public class ServletUser extends HttpServlet {
     private String action;
@@ -38,6 +45,10 @@ public class ServletUser extends HttpServlet {
                 redirect = "/index.jsp";
                 break;
             case "/user/admin":
+                List<Class> clases = new DaoUser().findAllClasses();
+                req.setAttribute("classes", clases);
+                List<User> users = new DaoUser().findAll();
+                req.setAttribute("users", users);
                 redirect = "/views/admin.jsp";
                 break;
             case "/user/instructor":
@@ -45,6 +56,20 @@ public class ServletUser extends HttpServlet {
                 break;
             case "/user/user":
                 redirect = "/views/user.jsp";
+                break;
+            case "/user/logut":
+                HttpSession session = req.getSession(false);
+                session.invalidate();
+                redirect = "/user/start";
+                break;
+            case "/user/view-createI":
+                redirect = "/views/crearInstructor.jsp";
+                break;
+            case "/user/view-createC":
+                List<User> instructors = new DaoUser().findInstructors();
+                req.setAttribute("instructors", instructors);
+                System.out.println(instructors);
+                redirect = "/views/crearClase.jsp";
                 break;
             default:
                 System.out.println(action);
@@ -87,8 +112,31 @@ public class ServletUser extends HttpServlet {
                                     StandardCharsets.UTF_8);
                 }
                 break;
-            case "":
-
+            case "/user/save-I":
+                firstName = req.getParameter("firstName");
+                lastName = req.getParameter("lastName");
+                curp = req.getParameter("curp");
+                birthdate = req.getParameter("birthdate");
+                email = req.getParameter("email");
+                password = req.getParameter("password");
+                user = new User(null,null,firstName,lastName,curp,birthdate,email,password,"Activo",2L);
+                boolean result = new DaoUser().saveI(user);
+                if (result) {
+                    redirect = "/user/admin?result=" + result + "&message=" + URLEncoder.encode("Guardado", StandardCharsets.UTF_8);
+                } else {
+                    redirect = "/user/admin?result=" + result + "&message=" + URLEncoder.encode("No se guardo", StandardCharsets.UTF_8);
+                }
+                break;
+            case "/user/save-C":
+                String nombreClase = req.getParameter("nombreClase");
+                String descripcion = req.getParameter("descripcion");
+                long instructorID = Long.parseLong(req.getParameter("instructorID"));
+                boolean result2 = new DaoUser().saveC(nombreClase,descripcion,instructorID);
+                if (result2) {
+                    redirect = "/user/admin?result=" + result2 + "&message=" + URLEncoder.encode("Guardado", StandardCharsets.UTF_8);
+                } else {
+                    redirect = "/user/admin?result=" + result2 + "&message=" + URLEncoder.encode("No se guardo", StandardCharsets.UTF_8);
+                }
                 break;
         }
         resp.sendRedirect(req.getContextPath() + redirect);
