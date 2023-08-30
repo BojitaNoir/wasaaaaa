@@ -25,7 +25,10 @@ import java.util.List;
         "/user/save-I",
         "/user/view-createI",
         "/user/view-createC",
-        "/user/save-C"
+        "/user/save-C",
+        "/user/view-class",
+        "/user/register",
+        "/user/view-register"
 })
 public class ServletUser extends HttpServlet {
     private String action;
@@ -51,9 +54,6 @@ public class ServletUser extends HttpServlet {
                 req.setAttribute("users", users);
                 redirect = "/views/admin.jsp";
                 break;
-            case "/user/instructor":
-                redirect = "/views/instructor.jsp";
-                break;
             case "/user/user":
                 redirect = "/views/user.jsp";
                 break;
@@ -70,6 +70,22 @@ public class ServletUser extends HttpServlet {
                 req.setAttribute("instructors", instructors);
                 System.out.println(instructors);
                 redirect = "/views/crearClase.jsp";
+                break;
+            case "/user/instructor":
+                session = req.getSession();
+                User user = (User) session.getAttribute("user");
+                List<Class> clases2 = new DaoUser().findAllClassesInstructor(user.getUserId());
+                req.setAttribute("classes", clases2);
+                redirect = "/views/instructor.jsp";
+                break;
+            case "/user/view-class":
+                Long id = Long.valueOf(req.getParameter("id"));
+                List<User> users2 = new DaoUser().findUserClass(id);
+                req.setAttribute("users", users2);
+                redirect = "/views/class.jsp";
+                break;
+            case "/user/view-register":
+                redirect = "/views/registro.jsp";
                 break;
             default:
                 System.out.println(action);
@@ -137,6 +153,15 @@ public class ServletUser extends HttpServlet {
                 } else {
                     redirect = "/user/admin?result=" + result2 + "&message=" + URLEncoder.encode("No se guardo", StandardCharsets.UTF_8);
                 }
+                break;
+            case "/user/register":
+               firstName = req.getParameter("nombres");
+                lastName = req.getParameter("apellidos");
+                curp = req.getParameter("curp");
+                birthdate = req.getParameter("fecha");
+                email = req.getParameter("correo");
+                password = req.getParameter("contraseña");
+                User newUser = new User();
                 break;
         }
         resp.sendRedirect(req.getContextPath() + redirect);

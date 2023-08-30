@@ -194,4 +194,51 @@ public class DaoUser {
         }
         return false;
     }
+
+    public List<Class> findAllClassesInstructor(Long userId) {
+        List<Class> clases = new ArrayList<>();
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT * from classes where instructor_id = "+userId+";";
+            pstm = conn.prepareStatement(query);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                Class class1 = new Class();
+                class1.setClassId(rs.getLong("class_id"));
+                class1.setClassName(rs.getString("class_name"));
+                class1.setDescription(rs.getString("description"));
+                class1.setInstructorId(rs.getLong("instructor_id"));
+                class1.setStatus(rs.getString("status"));
+                clases.add(class1);
+            }
+        }catch (SQLException e){
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return clases;
+    }
+
+    public List<User> findUserClass(Long id) {
+        List<User> users = new ArrayList<>();
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT p.first_name FROM persons p " +
+                    "INNER JOIN users u ON p.person_id = u.person_id " +
+                    "INNER JOIN enrollments ce ON u.user_id = ce.user_id WHERE ce.class_id = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1, id);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setFirstName(rs.getString("first_name"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "Error findUserClass: " + e.getMessage());
+        } finally {
+            close();
+        }
+        return users;
+    }
 }
