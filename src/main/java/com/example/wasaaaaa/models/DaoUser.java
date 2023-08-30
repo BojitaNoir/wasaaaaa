@@ -241,4 +241,42 @@ public class DaoUser {
         }
         return users;
     }
+
+    public boolean enrollment(Long claseId, Long userId) {
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "INSERT INTO enrollments VALUES (0,?,?);";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,userId);
+            pstm.setLong(2,claseId);
+            return pstm.executeUpdate() > 0; // == 1
+        }catch (SQLException e){
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE,"Error save"+e.getMessage());
+        }finally {
+            close();
+        }
+        return false;
+    }
+
+    public List<Class> findClassEnrollment(Long userId) {
+        List<Class> classes = new ArrayList<>();
+        try {
+            conn = new MySQLConnection().connect();
+            String query = "SELECT c.class_name FROM classes c " +
+                    "INNER JOIN enrollments ce ON c.class_id = ce.class_id WHERE ce.user_id = ?;";
+            pstm = conn.prepareStatement(query);
+            pstm.setLong(1,userId);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                Class class2 = new Class();
+                class2.setClassName(rs.getString("class_name"));
+                classes.add(class2);
+            }
+        }catch (SQLException e){
+            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, "Error findAll"+e.getMessage());
+        }finally {
+            close();
+        }
+        return classes;
+    }
 }
