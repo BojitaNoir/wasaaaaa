@@ -50,7 +50,7 @@
 </div>
 <div class="card" style="width: 18rem;">
     <div class="card-header">
-        Featured
+        Novedades
     </div>
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><a href="/user/view-register"><h2>Registrarte</h2></a></li>
