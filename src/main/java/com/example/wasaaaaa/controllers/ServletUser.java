@@ -28,7 +28,8 @@ import java.util.List;
         "/user/save-C",
         "/user/view-class",
         "/user/register",
-        "/user/view-register"
+        "/user/view-register",
+        "/user/enrollment"
 })
 public class ServletUser extends HttpServlet {
     private String action;
@@ -57,6 +58,11 @@ public class ServletUser extends HttpServlet {
             case "/user/user":
                 List<Class> clases4 = new DaoUser().findAllClasses();
                 req.setAttribute("classes", clases4);
+                session = req.getSession();
+                User user4 = (User) session.getAttribute("user");
+                List<Class> clases6 = new DaoUser().findClassEnrollment(user4.getUserId());
+                req.setAttribute("clases2", clases6);
+                System.out.println(clases6);
                 redirect = "/views/user.jsp";
                 break;
             case "/user/logut":
@@ -169,6 +175,21 @@ public class ServletUser extends HttpServlet {
                     redirect = "/user/start?result=" + result3 + "&message=" + URLEncoder.encode("Guardado", StandardCharsets.UTF_8);
                 } else {
                     redirect = "/user/start?result=" + result3 + "&message=" + URLEncoder.encode("No se guardo", StandardCharsets.UTF_8);
+                }
+                break;
+            case "/user/enrollment":
+                Long clase_id = Long.valueOf(req.getParameter("id"));
+                session = req.getSession();
+                User user5 = (User) session.getAttribute("user");
+                boolean resultE = new DaoUser().enrollment(clase_id,user.getUserId());
+                if (resultE){
+                    redirect = "/user/user?result=false&message=" + URLEncoder
+                            .encode("Matriculado en la clase",
+                                    StandardCharsets.UTF_8);
+                }else {
+                    redirect = "/user/user?result=false&message=" + URLEncoder
+                            .encode("Error en matricularse en la clase",
+                                    StandardCharsets.UTF_8);
                 }
                 break;
         }

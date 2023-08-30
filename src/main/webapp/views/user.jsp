@@ -9,6 +9,18 @@
 
 </head>
 <body>
+<br><br>
+<div class="card">
+    <div class="card-header">
+        Clases matriculadas
+    </div>
+    <div class="card-body">
+        <c:forEach var="clase2" items="${clases2}" varStatus="b">
+            <h2>${b.count}.<c:out value="${clase2.className}"/></h2>
+        </c:forEach>
+    </div>
+</div>
+
 <div>
     <div class="col-10">
         <div class="card">
@@ -27,20 +39,20 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="clas" items="${classes}" varStatus="a">
+                <c:forEach var="clas1" items="${classes}" varStatus="a">
                     <tr>
                         <td>
-                            <c:out value="${clas.className}"/>
+                            <c:out value="${clas1.className}"/>
                         </td>
                         <td>
-                            <c:out value="${clas.description}"/>
+                            <c:out value="${clas1.description}"/>
                         </td>
                         <td>
-                            <c:out value="${clas.status}"/>
+                            <c:out value="${clas1.status}"/>
                         </td>
                         <td>
-                            <form method="get" action="/user/view-class">
-                            <input hidden value="${clas.classId}" name="id">
+                            <form method="post" action="/user/enrollment">
+                            <input hidden value="${clas1.classId}" name="id">
                             <button type="submit" class="btn btn-outline-warning btn-sm">
                                 Inscribirse
                             </button>
@@ -53,7 +65,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
